@@ -7,6 +7,7 @@ import cors from "cors";
 import connectDb from "./utils/db.js";
 import userRoute from "./routes/user.routes.js";
 import companyRoute from "./routes/company.routes.js";
+import jobRoute from "./routes/job.routes.js";
 const app = express();
 
 // middleware
@@ -26,6 +27,7 @@ const PORT = process.env.PORT || 3000;
 //api
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
+app.use("/api/v1/job", jobRoute);
 
 app.listen(PORT, () => {
   connectDb();
