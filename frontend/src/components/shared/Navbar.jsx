@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
     // Dummy user object to keep the UI structure intact without backend logic
     // Change to a dummy object like { role: 'student', fullname: 'John Doe' } to see the logged-in UI
-    const user = null; 
+    const user = false; 
 
     return (
         <div className='bg-white'>
