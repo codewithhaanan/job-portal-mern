@@ -8,6 +8,9 @@ import { Link, useNavigate,  } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constent.js";
 import axios from "axios";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader2 } from "lucide-react";
+import { setLoading } from "@/redux/authSlice";
 
 const Signup = () => {
 
@@ -21,6 +24,8 @@ const Signup = () => {
     file: "",
   });
 const navigate =  useNavigate()
+  const { loading } = useSelector((store) => store.auth);
+ const dispatch = useDispatch();
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -42,6 +47,7 @@ const navigate =  useNavigate()
       formData.append("file", input.file);
     }
     try {
+        dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
@@ -55,7 +61,9 @@ const navigate =  useNavigate()
          
             const errorMessage = error.response?.data?.message || "Something went wrong!";
             toast.error(errorMessage);
-    }
+    }finally {
+          dispatch(setLoading(false));
+        }
   };
 
   return (
@@ -148,10 +156,7 @@ const navigate =  useNavigate()
             </div>
           </div>
 
-          {/* Fixed: Changed type="button" to type="submit" */}
-          <Button type="submit" className="w-full my-4">
-            Signup
-          </Button>
+          { loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">SignUp</Button>}
 
           <span className="text-sm">
             Already have an account?{" "}
