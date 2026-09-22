@@ -4,11 +4,12 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarImage } from '../ui/avatar'
 import { LogOut, User2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     // Dummy user object to keep the UI structure intact without backend logic
     // Change to a dummy object like { role: 'student', fullname: 'John Doe' } to see the logged-in UI
-    const user = false; 
+ const {user} =  useSelector(store=>store.auth)
 
     return (
         <div className='bg-white'>
