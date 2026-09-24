@@ -12,7 +12,7 @@ import AppliedJobsTable from './AppliedJobsTable'
 import UpdateProfileDialog from './UpdateProfileDialog'
 // import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
 
-// const skills = ["Html", "Css", "Javascript", "Reactjs"]
+
 const isResume = true;
 
 const Profile = () => {
