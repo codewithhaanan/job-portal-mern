@@ -15,10 +15,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // const file = req.file;
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -26,6 +22,15 @@ export const register = async (req, res) => {
         success: false,
       });
     }
+
+    // 💡 TIP 1: Check if file exists before Cloudinary upload
+    let profilePhotoUrl = "";
+    if (req.file) {
+      const fileUri = getDataUri(req.file);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+      profilePhotoUrl = cloudResponse.secure_url;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
@@ -34,6 +39,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile: {
+        profilePhoto: profilePhotoUrl, // Yahan ab URL automatically aa jayega
+      },
     });
 
     return res.status(201).json({
@@ -42,6 +50,11 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    // 💡 TIP 2: Send error response to frontend so it doesn't hang
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
   }
 };
 export const login = async (req, res) => {
